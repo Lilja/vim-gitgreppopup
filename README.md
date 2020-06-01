@@ -25,6 +25,6 @@ I know this term is already used by fugitive. I'm open for changes.
 
 ## Performance
 
-It would appear that syntax highlighting makes this popup a bit sluggish. There is a param called `g:gitgreppopup_disable_syntax` that will temporarily disable syntax and will reenable it after the popup is closed. For me it has decreased the amount slowness.
+It would appear that syntax highlighting makes this popup a bit sluggish. There is a param called `g:gitgreppopup_disable_syntax` that will temporarily disable syntax and will reenable it after the popup is closed. For me it has decreased the amount of slowness.
 
-[A ticket has been created for this](https://github.com/vim/vim/issues/6171)
+[An issue has been created for this in the vim repo](https://github.com/vim/vim/issues/6171)
