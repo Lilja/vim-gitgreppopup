@@ -18,27 +18,10 @@ function Cb(winid, result)
 endfunction
 
 function FormatAndPropify(str, regex)
-    " Match the term from user input to the output of git grep
-    let s:beginning = match(a:str, a:regex)
-    let obj = {"originalStr": a:str, "viewStr": "", "props": [], "lineNr": 0, "file": ""}
 
     " Remove binary file matces
     if len(matchstr(a:str, "Binary file") > 0) && stridx(a:str, "matches") != -1
         return {}
-    endif
-
-    if s:beginning != -1
-        let s:length = len(matchstr(a:str, a:regex))
-        let s:end = s:beginning + s:length
-        call add(obj.props, {"length": s:length, "col": s:beginning, "endcol": s:end, "type": "GitGrepPopupMatchType"})
-    endif
-
-    " Match the line number
-    " (?<=:)\d+(?=:)
-    let s:lineNumberRegex = '\(:\)\@<=\d\+\(:\)\@='
-    let s:lineNumberMatch = matchstr(a:str, s:lineNumberRegex)
-    if s:lineNumberMatch != -1
-        let obj.lineNr = s:lineNumberMatch
     endif
 
     " Match the file name
@@ -56,8 +39,24 @@ function FormatAndPropify(str, regex)
     let s:grepMetaRegex = s:fileNameRegex . '\d\+:'
     let s:match = matchstr(a:str, s:grepMetaRegex)
     let content = substitute(a:str, s:match, '', '')
-
     let obj.viewStr = obj.file . " " . content
+
+    " Match the term from user input to the output of git grep
+    let s:beginning = match(obj.viewStr, a:regex)
+    let obj = {"originalStr": a:str, "viewStr": "", "props": [], "lineNr": 0, "file": ""}
+    if s:beginning != -1
+        let s:length = len(matchstr(obj.viewStr, a:regex))
+        let s:end = s:beginning + s:length
+        call add(obj.props, {"length": s:length, "col": s:beginning, "endcol": s:end, "type": "GitGrepPopupMatchType"})
+    endif
+
+    " Match the line number
+    " (?<=:)\d+(?=:)
+    let s:lineNumberRegex = '\(:\)\@<=\d\+\(:\)\@='
+    let s:lineNumberMatch = matchstr(a:str, s:lineNumberRegex)
+    if s:lineNumberMatch != -1
+        let obj.lineNr = s:lineNumberMatch
+    endif
 
     return obj
 endfunction
