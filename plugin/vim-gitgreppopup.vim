@@ -43,7 +43,8 @@ function FormatAndPropify(str, regex)
     let obj.viewStr = obj.file . " " . content
 
     " Match the term from user input to the output of git grep
-    let s:beginning = match(obj.viewStr, a:regex)
+    " TODO: figure out why +1 is needed here...
+    let s:beginning = match(obj.viewStr, a:regex) + 1
     if s:beginning != -1
         let s:length = len(matchstr(obj.viewStr, a:regex))
         let s:end = s:beginning + s:length
