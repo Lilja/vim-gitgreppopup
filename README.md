@@ -18,9 +18,11 @@ let g:gitgreppopup_disable_syntax = 1
 ```
 
 ## Usage
-`:Ggrep let`
+`:Ggrep <term>`
 
-I know this term is already used by fugitive. I'm open for changes.
+where `<term>` is send directly to `git grep <term>`.
+
+I know this `Ggrep` is already used by fugitive. I'm open for changes.
 
 
 ## Performance
