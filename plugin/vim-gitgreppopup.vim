@@ -33,7 +33,7 @@ function FormatAndPropify(str, regex)
         let s:length = len(s:match)
         let s:end = s:beginning + s:length
         let obj.file = s:match[0:-2]
-        call add(obj.props, {"length": s:length, "col": s:beginning, "endcol": s:end, "type": "GitGrepPopupFileType"})
+        call add(obj.props, {"length": s:length, "col": s:beginning, "endcol": s:end, "type": "GitGrepPopupMatchType"})
     endif
 
     " body of file
@@ -43,7 +43,7 @@ function FormatAndPropify(str, regex)
     let obj.viewStr = obj.file . " " . content
 
     " Match the term from user input to the output of git grep
-    " TODO: figure out why +1 is needed here...
+    " TODO: figure out why +1 is needed here..
     let s:beginning = match(obj.viewStr, a:regex) + 1
     if s:beginning != -1
         let s:length = len(matchstr(obj.viewStr, a:regex))
