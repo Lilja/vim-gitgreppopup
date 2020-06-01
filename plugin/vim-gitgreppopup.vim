@@ -94,7 +94,7 @@ function FormatPretty(lines)
     return formatted_lines
 endfunction
 
-function g:GitGrepPopupRun(searchTerm)
+function s:GitGrepPopupRun(searchTerm)
     if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
         syntax off
     endif
@@ -129,3 +129,8 @@ function g:GitGrepPopupRun(searchTerm)
                 \ callback: "Cb",
         \ })
 endfunction
+
+
+if exists("g:gitgreppopup_enable")
+    command -nargs=* Ggrep :call s:GitGrepPopupRun(<f-args>)
+endif
