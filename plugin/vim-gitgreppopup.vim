@@ -86,7 +86,7 @@ function FormatPretty(lines)
     let formatted_lines = []
     for obj in a:lines
         if len(obj.props) != 0
-            call add(formatted_lines, { "text": obj.viewStr, "props": obj.props })
+            call add(formatted_lines, { "text": obj.viewStr })
         else
             call add(formatted_lines, { "text": obj.viewStr })
         endif
