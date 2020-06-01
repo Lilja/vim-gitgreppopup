@@ -34,11 +34,11 @@ function FormatAndPropify(str, regex)
     endif
 
     " Match the line number
-    let s:beginning = matchstr(a:str, s:lineNumberRegex)
     " (?<=:)\d+(?=:)
     let s:lineNumberRegex = '\(:\)\@<=\d\+\(:\)\@='
-    if s:beginning != -1
-        let obj.lineNr = s:beginning
+    let s:lineNumberMatch = matchstr(a:str, s:lineNumberRegex)
+    if s:lineNumberMatch != -1
+        let obj.lineNr = s:lineNumberMatch
     endif
 
     " Match the file name
