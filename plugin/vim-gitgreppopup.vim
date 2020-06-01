@@ -107,8 +107,8 @@ function s:GitGrepPopupRun(searchTerm)
     let windowHeightSize = float2nr(winheight('%') / 2)
     let windowWidthSize = float2nr(winwidth('%') * 0.80)
 
-    highlight GitGrepPopupFile term=italic cterm=italic cterm
-    highlight GitGrepPopupMatch term=italic cterm=italic ctermbg=red
+    " highlight GitGrepPopupFile term=italic cterm=italic cterm
+    " highlight GitGrepPopupMatch term=italic cterm=italic ctermbg=red
 
     if prop_type_get("GitGrepPopupMatchType") == {}
         call prop_type_add("GitGrepPopupMatchType", {"highlight": "IncSearch"})
