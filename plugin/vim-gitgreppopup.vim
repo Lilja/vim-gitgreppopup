@@ -18,6 +18,7 @@ function Cb(winid, result)
 endfunction
 
 function FormatAndPropify(str, regex)
+    let obj = {"originalStr": a:str, "viewStr": "", "props": [], "lineNr": 0, "file": ""}
 
     " Remove binary file matces
     if len(matchstr(a:str, "Binary file") > 0) && stridx(a:str, "matches") != -1
@@ -43,7 +44,6 @@ function FormatAndPropify(str, regex)
 
     " Match the term from user input to the output of git grep
     let s:beginning = match(obj.viewStr, a:regex)
-    let obj = {"originalStr": a:str, "viewStr": "", "props": [], "lineNr": 0, "file": ""}
     if s:beginning != -1
         let s:length = len(matchstr(obj.viewStr, a:regex))
         let s:end = s:beginning + s:length
