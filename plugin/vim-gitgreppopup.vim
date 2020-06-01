@@ -33,7 +33,7 @@ function FormatAndPropify(str, regex)
         let s:length = len(s:match)
         let s:end = s:beginning + s:length
         let obj.file = s:match[0:-2]
-        call add(obj.props, {"length": s:length, "col": s:beginning, "endcol": s:end, "type": "GitGrepPopupMatchType"})
+        call add(obj.props, {"length": s:length, "col": s:beginning, "endcol": s:end, "type": "GitGrepPopupFileType"})
     endif
 
     " body of file
