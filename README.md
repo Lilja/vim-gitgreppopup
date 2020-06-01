@@ -2,6 +2,8 @@
 
 Let's you see git grep in a popup window!
 
+![out.gif](out.gif)
+
 ## Install
 with vim-plug:
 ```vim
