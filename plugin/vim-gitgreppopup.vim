@@ -98,7 +98,7 @@ function g:GitGrepPopupRun(searchTerm)
     if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
         syntax off
     endif
-    let gitGrep = s:RunGitGrep(searchTerm)
+    let gitGrep = s:RunGitGrep(a:searchTerm)
     let lines = split(gitGrep, '\n')
     if len(lines) == 0
         echo "GitGrepPopup: Nothing found."
@@ -117,7 +117,7 @@ function g:GitGrepPopupRun(searchTerm)
     if prop_type_get("GitGrepPopupFileType") == {}
         call prop_type_add("GitGrepPopupFileType", {"highlight": "GitGrepPopupFile"})
     endif
-    let output = FormatGitOutput(lines, searchTerm)
+    let output = FormatGitOutput(lines, a:searchTerm)
     call RegisterPropsGlobally(output)
 
     let prettyOutput = FormatPretty(output)
