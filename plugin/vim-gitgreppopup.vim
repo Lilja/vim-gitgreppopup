@@ -104,11 +104,11 @@ function s:GitGrepPopupRun(searchTerm)
         echo "GitGrepPopup: Nothing found."
         return
     endif
-    let windowSize = winheight('%') / 2
-    let windowWidthSize = winwidth('%')
+    let windowHeightSize = float2nr(winheight('%') / 2)
+    let windowWidthSize = float2nr(winwidth('%') * 0.80)
 
     highlight GitGrepPopupFile term=italic cterm=italic
-    highlight GitGrepPopupMatch term=italic cterm=italic ctermbg=yellow ctermfg=black
+    highlight GitGrepPopupMatch term=italic cterm=italic ctermbg=red
 
     if prop_type_get("GitGrepPopupMatchType") == {}
         call prop_type_add("GitGrepPopupMatchType", {"highlight": "GitGrepPopupMatch"})
@@ -123,7 +123,7 @@ function s:GitGrepPopupRun(searchTerm)
     let prettyOutput = FormatPretty(output)
     let winid = popup_menu(prettyOutput, #{
                 \ pos: "center",
-                \ maxheight: windowSize,
+                \ maxheight: windowHeightSize,
                 \ minwidth: windowWidthSize,
                 \ maxwidth: windowWidthSize,
                 \ callback: "Cb",
