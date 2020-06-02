@@ -130,7 +130,4 @@ function s:GitGrepPopupRun(searchTerm)
         \ })
 endfunction
 
-
-if exists("g:gitgreppopup_enable")
-    command -nargs=* Ggrep :call s:GitGrepPopupRun(<f-args>)
-endif
+command -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)

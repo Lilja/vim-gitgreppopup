@@ -13,7 +13,6 @@ Plug 'lilja/vim-gitgreppopup'
 Init the function:
 
 ```vim
-let g:gitgreppopup_enable = 1
 let g:gitgreppopup_disable_syntax = 1
 ```
 
