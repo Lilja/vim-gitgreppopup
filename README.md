@@ -1,6 +1,6 @@
 # vim-gitgreppopup
 
-Let's you see git grep in a popup window and navigate to that file with that line number.
+Let's you see git grep in a popup window and navigate to that file with that line number. Currently only works with vanilla vim >= 8.2 and not neovim. [Issue](https://github.com/Lilja/vim-gitgreppopup/issues/3).
 
 ![out.gif](out.gif)
 
