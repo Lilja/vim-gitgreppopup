@@ -17,7 +17,7 @@ function! Cb(lines, winid, result)
 
     if a:result != -1
         if &modified
-            echo_failure "GitGrepPopup: You have unsaved changes."
+            call s:echo_failure("GitGrepPopup: You have unsaved changes.")
         endif
         let obj = a:lines[a:result-1]
         let vimCmd = ":e +" . obj.lineNr . " " . obj.file
