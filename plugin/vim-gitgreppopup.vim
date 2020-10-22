@@ -3,6 +3,12 @@ function! s:RunGitGrep(search)
     return substitute(system(cmd), '\n', '\1', '')
 endfunction
 
+function! s:echo_failure(message)
+  echohl WarningMsg
+  echo a:message
+  echohl None
+endfunction
+
 
 function! Cb(lines, winid, result)
     if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
@@ -11,8 +17,7 @@ function! Cb(lines, winid, result)
 
     if a:result != -1
         if &modified
-            echo "GitGrepPopup: You have unsaved changes."
-            return
+            echo_failure "GitGrepPopup: You have unsaved changes."
         endif
         let obj = a:lines[a:result-1]
         let vimCmd = ":e +" . obj.lineNr . " " . obj.file
@@ -80,8 +85,7 @@ function! s:GitGrepPopupRun(searchTerm)
     let gitGrep = s:RunGitGrep(a:searchTerm)
     let lines = split(gitGrep, '\n')
     if len(lines) == 0
-        echo "GitGrepPopup: Nothing found."
-        return
+        call s:echo_failure("GitGrepPopup: Nothing found.") | return
     endif
     let windowHeightSize = float2nr(winheight('%') / 2)
     let windowWidthSize = float2nr(winwidth('%') * 0.80)
@@ -98,7 +102,7 @@ function! s:GitGrepPopupRun(searchTerm)
                     \ callback: funcref("Cb", [output]),
             \ })
     else
-        echo "GitGrepPopup: Neovim not supported."
+        call s:echo_failure("GitGrepPopup: Neovim not supported.") | return
     endif
     highlight default link GitGrepPopupFile  Directory
     highlight default link GitGrepPopupMatch IncSearch
