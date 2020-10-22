@@ -1,7 +1,7 @@
 function! s:RunGitGrep(search)
     let cmd = "git grep --line-number " . a:search
     return substitute(system(cmd), '\n', '\1', '')
-endfunction!
+endfunction
 
 
 function! Cb(lines, winid, result)
@@ -10,6 +10,10 @@ function! Cb(lines, winid, result)
     endif
 
     if a:result != -1
+        if &modified
+            echo "GitGrepPopup: You have unsaved changes."
+            return
+        endif
         let obj = a:lines[a:result-1]
         let vimCmd = ":e +" . obj.lineNr . " " . obj.file
         execute vimCmd
@@ -94,7 +98,7 @@ function! s:GitGrepPopupRun(searchTerm)
                     \ callback: funcref("Cb", [output]),
             \ })
     else
-        echo "Neovim not supported."
+        echo "GitGrepPopup: Neovim not supported."
     endif
     highlight default link GitGrepPopupFile  Directory
     highlight default link GitGrepPopupMatch IncSearch
@@ -105,4 +109,4 @@ function! s:GitGrepPopupRun(searchTerm)
     call matchadd('GitGrepPopupLineNumber', '\(: \)\@<=\d\+', 10, -1, {'window': winid})
 endfunction
 
-command! -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)
+command -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)
