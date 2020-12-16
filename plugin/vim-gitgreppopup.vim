@@ -24,6 +24,7 @@ function! Cb(lines, winid, result)
 endfunction
 
 function! FormatAndPropify(str, regex)
+    let strCopy = a:str
     let obj = {"originalStr": a:str, "viewStr": "", "props": [], "lineNr": 0, "file": ""}
 
     " Remove binary file matces
@@ -31,26 +32,32 @@ function! FormatAndPropify(str, regex)
         return {}
     endif
 
+    " If the line length is really long(>512), substring the text
+    let maxLen = 512
+    if len(strCopy) > maxLen
+        let strCopy = strCopy[0:maxLen]
+    endif
+
     " Match the file name
     let s:fileNameRegex = '^[^:]*\(:\)\=:'
-    let s:beginning = match(a:str, s:fileNameRegex)
+    let s:beginning = match(strCopy, s:fileNameRegex)
     if s:beginning != -1
-        let s:match = matchstr(a:str, s:fileNameRegex)
+        let s:match = matchstr(strCopy, s:fileNameRegex)
         let obj.file = s:match[0:-2]
     endif
 
     " Match the line number
     " (?<=:)\d+(?=:)
     let s:lineNumberRegex = '\(:\)\@<=\d\+\(:\)\@='
-    let s:lineNumberMatch = matchstr(a:str, s:lineNumberRegex)
+    let s:lineNumberMatch = matchstr(strCopy, s:lineNumberRegex)
     if s:lineNumberMatch != -1
         let obj.lineNr = s:lineNumberMatch
     endif
 
     " body of file
     let s:grepMetaRegex = s:fileNameRegex . '\d\+:'
-    let s:match = matchstr(a:str, s:grepMetaRegex)
-    let content = substitute(a:str, s:match, '', '')
+    let s:match = matchstr(strCopy, s:grepMetaRegex)
+    let content = substitute(strCopy, s:match, '', '')
     let obj.viewStr = obj.file . ": " .obj.lineNr . " " . content
 
     return obj
