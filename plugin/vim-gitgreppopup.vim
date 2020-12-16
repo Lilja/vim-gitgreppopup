@@ -11,9 +11,7 @@ endfunction
 
 
 function! Cb(lines, winid, result)
-    if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
-        syntax on
-    endif
+    call s:SetSyntax("on")
 
     if a:result != -1
         if &modified
@@ -78,13 +76,24 @@ function! FormatPretty(lines)
     return formatted_lines
 endfunction
 
-function! s:GitGrepPopupRun(searchTerm)
-    if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
-        syntax off
+function! s:SetSyntax(onOrOff)
+    if a:onOrOff == "off"
+        if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
+            syntax off
+        endif
+    else
+        if exists("g:gitgreppopup_disable_syntax") && g:gitgreppopup_disable_syntax == 1
+            syntax on
+        endif
     endif
+endfunction
+
+function! s:GitGrepPopupRun(searchTerm)
+    call s:SetSyntax("off")
     let gitGrep = s:RunGitGrep(a:searchTerm)
     let lines = split(gitGrep, '\n')
     if len(lines) == 0
+        call s:SetSyntax("on")
         call s:echo_failure("GitGrepPopup: Nothing found.") | return
     endif
     let windowHeightSize = float2nr(winheight('%') / 2)
