@@ -95,19 +95,11 @@ function! s:SetSyntax(onOrOff)
     endif
 endfunction
 
-function! s:GitGrepPopupRun(searchTerm)
-    call s:SetSyntax("off")
-    let g:gitGrepPrevCommand = a:searchTerm
-    let gitGrep = s:RunGitGrep(a:searchTerm)
-    let lines = split(gitGrep, '\n')
-    if len(lines) == 0
-        call s:SetSyntax("on")
-        call s:echo_failure("GitGrepPopup: Nothing found.") | return
-    endif
+function s:RenderPopup(lines, searchTerm)
     let windowHeightSize = float2nr(winheight('%') / 2)
     let windowWidthSize = float2nr(winwidth('%') * 0.80)
 
-    let output = FormatGitOutput(lines, a:searchTerm)
+    let output = FormatGitOutput(a:lines, a:searchTerm)
 
     let prettyOutput = FormatPretty(output)
     if exists('*popup_menu')
@@ -130,6 +122,19 @@ function! s:GitGrepPopupRun(searchTerm)
     call matchadd('GitGrepPopupLineNumber', '\(: \)\@<=\d\+', 10, -1, {'window': winid})
 endfunction
 
+function! s:GitGrepPopupRun(searchTerm)
+    call s:SetSyntax("off")
+    let g:gitGrepPrevCommand = a:searchTerm
+    let gitGrep = s:RunGitGrep(a:searchTerm)
+    let lines = split(gitGrep, '\n')
+    if len(lines) == 0
+        call s:SetSyntax("on")
+        call s:echo_failure("GitGrepPopup: Nothing found.")
+    else
+        call s:RenderPopup(lines, a:searchTerm)
+    endif
+endfunction
+
 function! s:GitGrepPopupRerun()
     let prev = get(g:, 'gitGrepPrevCommand', "default")
     if prev != "default"
@@ -137,5 +142,5 @@ function! s:GitGrepPopupRerun()
     endif
 endfunction
 
-command -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)
-command -nargs=* GitGrepRerun :call s:GitGrepPopupRerun()
+command! -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)
+command! -nargs=* GitGrepRerun :call s:GitGrepPopupRerun()
