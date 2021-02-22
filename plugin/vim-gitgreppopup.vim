@@ -97,6 +97,7 @@ endfunction
 
 function! s:GitGrepPopupRun(searchTerm)
     call s:SetSyntax("off")
+    let g:gitGrepPrevCommand = a:searchTerm
     let gitGrep = s:RunGitGrep(a:searchTerm)
     let lines = split(gitGrep, '\n')
     if len(lines) == 0
@@ -129,4 +130,12 @@ function! s:GitGrepPopupRun(searchTerm)
     call matchadd('GitGrepPopupLineNumber', '\(: \)\@<=\d\+', 10, -1, {'window': winid})
 endfunction
 
+function! s:GitGrepPopupRerun()
+    let prev = get(g:, 'gitGrepPrevCommand', "default")
+    if prev != "default"
+        call s:GitGrepPopupRun(g:gitGrepPrevCommand)
+    endif
+endfunction
+
 command -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)
+command -nargs=* GitGrepRerun :call s:GitGrepPopupRerun()
