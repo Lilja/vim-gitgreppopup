@@ -1,5 +1,5 @@
 function! s:RunGitGrep(search)
-    let cmd = "git grep --line-number " . a:search
+    let cmd = printf("git grep --line-number '%s'", a:search)
     return substitute(system(cmd), '\n', '\1', '')
 endfunction
 
