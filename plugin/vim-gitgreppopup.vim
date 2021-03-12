@@ -142,13 +142,13 @@ function! s:GitGrepPopupRerun()
     endif
 endfunction
 
-function! s:GitGrepPopupCursurRun()
+function! s:GitGrepPopupCursorRun()
     let underCursor = expand("<cword>")
-    if prev != ""
+    if underCursor != ""
         call s:GitGrepPopupRun(underCursor)
     endif
 endfunction
 
 command! -nargs=* GitGrep :call s:GitGrepPopupRun(<f-args>)
-command! -nargs=* GitGrepCursor :call s:GitGrepPopupCursurRun(<f-args>)
+command! -nargs=* GitGrepCursor :call s:GitGrepPopupCursorRun(<f-args>)
 command! -nargs=* GitGrepRerun :call s:GitGrepPopupRerun()
